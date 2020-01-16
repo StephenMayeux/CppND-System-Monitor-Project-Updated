@@ -28,6 +28,7 @@ std::string OperatingSystem();
 std::string Kernel();
 
 // CPU
+// Apprarently this shit is auto incrementing??
 enum CPUStates {
   kUser_ = 0,
   kNice_,
