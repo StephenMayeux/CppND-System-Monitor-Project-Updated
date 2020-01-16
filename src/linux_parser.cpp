@@ -112,10 +112,19 @@ long LinuxParser::Jiffies() { return 0; }
 long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+long LinuxParser::ActiveJiffies() {
+  vector<string> jiffies = CpuUtilization();
+  return (std::stol(jiffies[0]) + std::stol(jiffies[1]) +
+    std::stol(jiffies[2]) + std::stol(jiffies[5]) +
+    std::stol(jiffies[6]) + std::stol(jiffies[7]) +
+    std::stol(jiffies[8]) + std::stol(jiffies[9]));
+}
 
 // TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+long LinuxParser::IdleJiffies() {
+  vector<string> jiffies = CpuUtilization();
+  return (std::stol(jiffies[3]) + std::stol(jiffies[4]));
+}
 
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { 
