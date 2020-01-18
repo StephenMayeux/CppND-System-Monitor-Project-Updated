@@ -13,11 +13,17 @@ using std::vector;
 
 Process::Process(int pid) : pid_(pid) {}
 
-// TODO: Return this process's ID
+// DONE: Return this process's ID
 int Process::Pid() { return pid_; }
 
-// TODO: Return this process's CPU utilization
-float Process::CpuUtilization() { return 0; }
+// DONE: Return this process's CPU utilization
+float Process::CpuUtilization() {
+    return cpu_;
+}
+
+void Process::SetCpuUtilization(long a, long b) {
+    cpu_ = (float)a / b;
+}
 
 // TODO: Return the command that generated this process
 string Process::Command() { return string(); }

@@ -26,6 +26,12 @@ vector<Process>& System::Processes() {
         processes_.push_back(p);
     }
 
+    for (auto& process : processes_) {
+        long active_jiffies = LinuxParser::ActiveJiffies(process.Pid());
+        long jiffies = LinuxParser::Jiffies();
+        process.SetCpuUtilization(active_jiffies, jiffies);
+    }
+
     return processes_;
 }
 
