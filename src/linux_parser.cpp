@@ -199,13 +199,30 @@ int LinuxParser::RunningProcesses() {
   return value;
 }
 
-// TODO: Read and return the command associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Command(int pid[[maybe_unused]]) { return string(); }
+// DONE: Read and return the command associated with a process
+string LinuxParser::Command(int pid) {
+  string line;
+  std::ifstream stream(LinuxParser::kProcDirectory + to_string(pid) + LinuxParser::kCmdlineFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    return line;
+  }
+}
 
-// TODO: Read and return the memory used by a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Ram(int pid[[maybe_unused]]) { return string(); }
+// DONE: Read and return the memory used by a process
+string LinuxParser::Ram(int pid) {
+  string value;
+  std::ifstream stream(LinuxParser::kProcDirectory + to_string(pid) + LinuxParser::kStatFilename);
+  if (stream.is_open()) {
+    while (stream >> value) {
+      if (value == "VmSize:") {
+        if (stream >> value) {
+          return std::to_string(stoi(value));
+        }
+      }
+    }
+  }
+}
 
 // DONE: Read and return the user ID associated with a process
 string LinuxParser::Uid(int pid) {
@@ -237,6 +254,17 @@ string LinuxParser::User(int pid) {
   }
 }
 
-// TODO: Read and return the uptime of a process
-// REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+// DONE: Read and return the uptime of a process
+long LinuxParser::UpTime(int pid) {
+  long time = 0;
+  string value;
+  std::ifstream stream(LinuxParser::kProcDirectory + to_string(pid) + LinuxParser::kStatFilename);
+  if (stream.is_open()) {
+    for (int i = 0; stream >> value; i++) {
+      if (i == 13) {
+        long time = stol(value);
+        return time;
+      }
+    }
+  }
+}
