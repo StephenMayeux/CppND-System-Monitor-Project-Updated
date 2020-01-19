@@ -9,7 +9,6 @@
 
 using std::string;
 
-// DONE: Complete this helper function
 string Format::ElapsedTime(long seconds) { 
     int hh = seconds / HOUR;
     seconds %= HOUR;
