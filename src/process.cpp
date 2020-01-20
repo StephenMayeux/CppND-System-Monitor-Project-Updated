@@ -15,6 +15,7 @@ Process::Process(int pid) : pid_(pid) {}
 
 int Process::Pid() { return pid_; }
 
+<<<<<<< HEAD
 float Process::CpuUtilization() const {
     return cpu_;
 }
@@ -44,5 +45,22 @@ long int Process::UpTime() {
 }
 
 bool Process::operator<(Process const& a) const {
+=======
+float Process::CpuUtilization() { return cpu_;}
+
+void Process::SetCpuUtilization(long active, long all) {
+    cpu_ = (float)active / all;
+}
+
+string Process::Command() { return LinuxParser::Command(pid_); }
+
+string Process::Ram() { return LinuxParser::Ram(pid_); }
+
+string Process::User() { return LinuxParser::User(pid_); }
+
+long int Process::UpTime() { return LinuxParser::UpTime(pid_); }
+
+bool Process::operator>(Process& a) {
+>>>>>>> round-two
     return CpuUtilization() > a.CpuUtilization();
 }

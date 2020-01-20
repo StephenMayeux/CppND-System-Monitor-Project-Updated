@@ -9,6 +9,7 @@ It contains relevant attributes as shown below
 class Process {
  public:
   Process(int pid);
+<<<<<<< HEAD
   int Pid();
   std::string User();
   std::string Command();
@@ -16,11 +17,24 @@ class Process {
   std::string Ram();
   long int UpTime();
   bool operator<(Process const& a) const;
+=======
+  int Pid();                               // TODO: See src/process.cpp
+  std::string User();                      // TODO: See src/process.cpp
+  std::string Command();                   // TODO: See src/process.cpp
+  float CpuUtilization();                  // TODO: See src/process.cpp
+  std::string Ram();                       // TODO: See src/process.cpp
+  long int UpTime();                       // TODO: See src/process.cpp
+  bool operator>(Process& a);  // TODO: See src/process.cpp
+>>>>>>> round-two
   void SetCpuUtilization(long a, long b);
 
  private:
     int pid_;
+<<<<<<< HEAD
     float cpu_ = 0;
+=======
+    float cpu_;
+>>>>>>> round-two
 };
 
 #endif
