@@ -3,6 +3,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "process.h"
 #include "processor.h"
@@ -14,11 +15,33 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-// TODO: Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+vector<Process>& System::Processes() {
+    vector<int> pids = LinuxParser::Pids();
+
+    // remove duplicate pids
+    //pids.erase(std::unique(pids.begin(), pids.end()), pids.end());
+
+    for (int pid : pids) {
+        Process p (pid);
+        processes_.push_back(p);
+    }
+
+    for (auto& process : processes_) {
+        long active_jiffies = LinuxParser::ActiveJiffies(process.Pid());
+        long jiffies = LinuxParser::Jiffies();
+        process.SetCpuUtilization(active_jiffies, jiffies);
+    }
+
+    // sort by cpu usage in desc order
+    std::sort(processes_.begin(), processes_.end(), [](Process a, Process b) {
+        return a > b;
+    });
+
+    return processes_;
+}
 
 std::string System::Kernel() { return LinuxParser::Kernel(); }
 
