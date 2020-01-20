@@ -24,9 +24,15 @@ vector<Process>& System::Processes() {
     // remove duplicate pids
     //pids.erase(std::unique(pids.begin(), pids.end()), pids.end());
 
+    set<int> unique_pids;
+    for (Process& process : processes_) {
+        unique_pids.insert(process.Pid());
+    }
+
     for (int pid : pids) {
-        Process p (pid);
-        processes_.push_back(p);
+        if (unique_pids.find(pid) == unique_pids.end()) {
+            processes_.emplace_back(pid);
+        }
     }
 
     for (auto& process : processes_) {
